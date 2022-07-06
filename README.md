@@ -56,6 +56,12 @@ Effectively this "Invoke" will go ahead and execute any of the one or more metho
 ![](https://cdn.discordapp.com/attachments/994083232712773645/994102559616815134/delh_Function1_.png)
 
 
+By the way, for Function1 and for all the other functions like this from now on, make sure to use the uNode Inspector to define one string parameter named str for the function, like this:
+
+![](https://cdn.discordapp.com/attachments/994083232712773645/994111879549034587/delh_sig_.png)
+
+
+
 In this one the specific funtion1_name is passed in to a custom unsubscribe node. 
 In this specific case, it happen to be actually unsubscribing the very same method which is running right now, and it is the same one which wa subscribed to in the Start function above.
 
