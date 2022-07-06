@@ -1,5 +1,3 @@
-# DelegateHolder
-
 In case one wonders if it is possible to use the Unity Asset uNode Visual Scripting version 2.1.1 to register event, invoke event, unregister event, and clear event, including any arbitrary method whether it is on the same uNode graph or even just any arbitrary method, and whether it is a Unity Event or a custom event, and whether it is called from Update function, FixedUpdate function, from a custom coroutine, or even from outside of a coroutine from elsewhere, it should be possible to do all of this with uNode.
 
 
@@ -28,12 +26,17 @@ Because it could cause the Unity editor to hang or even crash (or have to be cra
 
 First  make a DelegateHolder named uMyDelegateHolder, which should just have the default values
 
+![](https://cdn.discordapp.com/attachments/994083232712773645/994102558920540230/delh_var1_.png)
+
 and a string named function1_name with value of Function1
+
+![](https://cdn.discordapp.com/attachments/994083232712773645/994102559113490502/delh_var2_.png)
 
 For the following Functions in the graph, define them like this:
 
 - For Start build it like this:
 
+![](https://cdn.discordapp.com/attachments/994083232712773645/994102559352553532/delh_Start_.png)
 
 What happens here is very first thing, a Method Action Function1 is defined and fed into the "My Method Action" input of custom node "Subscribe DelegateHolder". For purposes of simplicity, the Method body in this example is actually going to be one of the very methods on the same uNode graph itself! In this case the body is just the Function1 we have in the same graph.
 
@@ -41,49 +44,65 @@ For My Delegate Holder input using the variable uMyDelegateHolder which will be 
 
 For the "My String Method Name" using the variable "function1_name". Later from even inside the very event itself, we will unsubscribe from this specific event to demonstrate functionality of unsubscribing from a specific event that was previously subscribed to, and keeping the name in variable will make this easier to do.
 
-Finally, using custom node Invoke DelegateHolder and pass in the same DelegateHolder and also using the string value "myStep_1" which will be passed into the node as well. Later it will be demonstrated that Function1 will definitely receive this "myStep_1".
+Finally, using custom node Invoke DelegateHolder and pass in the same uMyDelegateHolder and also using the string value "myStep_1" which will be passed into the node as well (later and also in the console output it will be demonstrated that Function1 will definitely receive this "myStep_1" and be able to output it as well).
 
-Effectively this "Invoke" will go ahead and execute any of the one or more method action subscribed to in DelegateHolder. In this case it will end up executing the one Method Action, which is Function1.
+Effectively this "Invoke" will go ahead and execute any of the one or more method action subscribed to in DelegateHolder. In this case it will end up executing the one Method Action, which is Function1, and that is what will be executed.
 
 
 - For Function1    build it like this:
 
+![](https://cdn.discordapp.com/attachments/994083232712773645/994102559616815134/delh_Function1_.png)
 
 
 In this one the specific funtion1_name is passed in to a custom unsubscribe node. 
-In this specific case, it happen to be actually unsubscribing the very same method which is running right now.
-After this unsubscription, the nodes defined will end up subscribing two methods, Function 11 and Function 111 - then finally Invoke.
+In this specific case, it happen to be actually unsubscribing the very same method which is running right now, and it is the same one which wa subscribed to in the Start function above.
 
-This will end up causing BOTH of the functions to execute in parallel, since there are two methods subscribed.
+After this unsubscription, the custom nodes defined after that will end up subscribing two methods, 
+Function11 and Function111 
+and then finally Invoke, with the string passed of "myStep_2".
+
+This will end up causing BOTH of the functions Function11 and Function 111 to execute at the same time in parallel, since there are actually two methods subscribed just prior to the Invoke. Both of them will execute at the same time.
 
 
 - For Function11   build it like this:
 
+![](https://cdn.discordapp.com/attachments/994083232712773645/994102559822319636/delh_Functiuon_11_.png)
 
-This is just to simply illustrate the method being run. It will log 11 to show it is FUnction11, 
+This is just to simply illustrate the method being run successfully. It will log 11 to console to show it is from Function11, 
 and log the string passed in from Invoke to demonstrate the working functionality of the argument that is passed in from Invoke.
+In this case it should log the string of "myStep_2"
 
-For Function111  build it like this:
+- For Function111  build it like this:
+
+![](https://cdn.discordapp.com/attachments/994083232712773645/994102560086573066/delh_Function111_.png)
 
 This one works kind of like Function 1 except this time, a custom node Reset DelegateHolder is used which will clear all subscriptions without needing to unsubscribe from each one individually - so this will in effect remove both subscriptions even without them being individually removed .
 Then, an Function1111 is registered, intended to be the final method for this example, and invoked.
 
-For Function1111 build it like this:
+- For Function1111 build it like this:
 
-This one is similar to Function 11 just to illustrate it is working - it only does one thing at the end and resets the DelegateHandler to remove any subscriptions - and then the method is done.
+![](https://cdn.discordapp.com/attachments/994083232712773645/994102560321458298/delh_Function1111_.png)
+
+This one is similar to Function 11 just to illustrate it is working - it logs a couple of things to show it is working, and at the end resets the DelegateHandler to remove any subscriptions - and then the method is done.
 
 - That is it
 
-Now save and compile the Class COmponent graph.
+Now save and compile the Class Component graph.
 
 Create an empty GameObject put it anywhere in your active scene.
 Add a uNodeSpawner Component to the GameObject and set the graph to be the test_component_del_h Class Component graph you just made. 
 
-Now press play. It should give the following expected output when run:
+![](https://cdn.discordapp.com/attachments/994083232712773645/994102558719221872/delh_uNodeSpawner_.png)
+
+Now press play in Unity Editor. 
+It should give the following expected output when run:
+
+![](https://cdn.discordapp.com/attachments/994083232712773645/994102558501122118/delh_console_output_.png)
 
 
+That is one way you can do something like this in uNode.
 
-If you really like it this way, you can use it if you want, but you should be careful of some things. For example if you want the same invocation to repeat again as shown in the red warning above, you may want to first either at least wrap this in a Coroutine and using yield, or otherwise making sure you have custom way the event is fired that is intermittent or otherwise not just the exact same continuous call over and over again, so that the Unity Editor does not crash due to infinite calling of the same method again and again, for one. 
+If you really like it this kind of way, you can use it if you want, but you should be careful of some things. For example if you want the same invocation to repeat again as shown in the red warning above, you may want to first either at least wrap this in a Coroutine and using yield, or otherwise making sure you have custom way the event is fired that is intermittent or otherwise not just the exact same continuous call over and over again, so that the Unity Editor does not crash due to infinite calling of the same method again and again, for one. 
 
 Also note I made the above example very quickly and so in general this example should be used just to study or test on some approaches in uNode, since this example implementation may benefit from some improvements before used in production.
 
