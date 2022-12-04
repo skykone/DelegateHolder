@@ -8,7 +8,7 @@ namespace MaxyGames.uNode.Nodes {
         [Tooltip("myStringMethodName")]
         public string myStringMethodName;
         [Tooltip("myMethodAction")]
-        public System.Action<string> myMethodAction;
+        public System.Action<object> myMethodAction;
         public void Execute(object graph)
         {
             var myStrHandlers = myDelegateHolder.strHandlers;
@@ -49,10 +49,10 @@ namespace MaxyGames.uNode.Nodes {
         [Tooltip("myDelegateHolder")]
         public DelegateHolder myDelegateHolder;
         [Tooltip("myString")]
-        public string myString;
+        public object myObject;
         public void Execute(object graph)
         {
-            myDelegateHolder.Invoke(myString);
+            myDelegateHolder.Invoke(myObject);
         }
     } 
     
