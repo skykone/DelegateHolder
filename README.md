@@ -1,6 +1,11 @@
 # DelegateHolder
 
-December 2022 Update 1 - single argument is object now rather than string, for more flexibility on what you can pass in as the argument when invoking.
+A set of custom nodes and functionality to be used with uNode Visual Scripting, Unity asset.
+
+------
+
+December 2022 Update 1 - single argument is object now rather than string, for more flexibility on what you can pass in as the argument when invoking. 
+Tested with uNode 2.1.3 (uNode version 2.1.3 released 11/30/2022)
 
 ![](https://cdn.discordapp.com/attachments/994083232712773645/1048901026419322880/1_.png)
 ![](https://cdn.discordapp.com/attachments/994083232712773645/1048901026788409395/2_.png)
