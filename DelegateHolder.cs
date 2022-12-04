@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class DelegateHolder
 {
-    public delegate void MyEventHandler(string foo);
+    public delegate void MyEventHandler(object foo);
         
     public event MyEventHandler SomethingHappened;
 
@@ -15,7 +15,7 @@ public class DelegateHolder
         
     }
 
-    public MyEventHandler CreateMEH(System.Action<string> f)
+    public MyEventHandler CreateMEH(System.Action<object> f)
     {
         return new MyEventHandler(f);
     }
@@ -37,7 +37,7 @@ public class DelegateHolder
         SomethingHappened = delegate { };
     }
 
-    public void Invoke( string s)
+    public void Invoke( object s)
     {
         try
         {
